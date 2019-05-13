@@ -92,12 +92,15 @@ class ClusterHead {
 
   appendChild(child) {
     let branch = this.getFreeBranches()[0];
+
     branch.head = child;
+
     child._color = branch.color;
     child.parent = this.uav;
     child.ownWeight = this.uav.ownWeight + 1;
     this.uav.shouldFlock = child.shouldFlock = false;
     let branches = this.getOccupiedBranches();
+
     if (branches.length == this.nrOfBranches && this.uav.shouldAcceptChildren) {
       this.uav.shouldAcceptChildren = false;
       this.startAcceptingAdditionalLeaf();

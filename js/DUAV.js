@@ -64,11 +64,11 @@ class DUAV extends UAV {
   }
 
   positionateAccordingFormation(angle, mUAVDir, rotDir, clusterRadius, targetPos) {
-    var fracAngle = angle * this.ownWeight;
-    var xMag = clusterRadius * cos(fracAngle);
-    var zMag = clusterRadius * sin(fracAngle);
-    var xComp = rotDir.normalize().mult(xMag);
-    var zComp = mUAVDir.normalize().mult(zMag);
+    let fracAngle = angle * this.ownWeight;
+    let xMag = clusterRadius * cos(fracAngle);
+    let zMag = clusterRadius * sin(fracAngle);
+    let xComp = rotDir.normalize().mult(xMag);
+    let zComp = mUAVDir.normalize().mult(zMag);
 
     targetPos = targetPos.add(xComp).add(zComp);
 
@@ -81,9 +81,9 @@ class DUAV extends UAV {
       targetPos = targetPos.sub(xComp).add(zComp);
     }
 
-    var curPos = this.actualPosition;
-    var dir = targetPos.sub(curPos).normalize();
-    //this.maxSpeed = 1.0;
+    let curPos = this.actualPosition;
+    let dir = targetPos.sub(curPos).normalize();
+
     this.applyForce(dir, 0.7);
 
     if (this.child) {

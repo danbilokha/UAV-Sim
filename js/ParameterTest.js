@@ -5,23 +5,24 @@ class ParameterTest {
     this._parameterPicker = 0;
     this._currentRunCount = 1;
     this._runLog = 'sep=,\n' +
-                    'flightZoneWidth' +
-                    ',flightZoneHeight' +
-                    ',flightZoneDepth' +
-                    ',numOfDUAV' +
-                    ',communicationRange' +
-                    ',numOfBranches' +
-                    ',duavRadius' +
-                    ',duavMaxSpeed' +
-                    ',duavCollisionThreshold' +
-                    ',duavWobblingRadius' +
-                    ',muavRadius' +
-                    ',muavMaxSpeed' +
-                    ',muavCollisionThreshold' +
-                    ',muavWobblingRadius' +
-                    ',numOfClusters' +
-                    ',numOfLonelyUAVs' +
-                    ',timePassed';
+      'flightZoneWidth' +
+      ',flightZoneHeight' +
+      ',flightZoneDepth' +
+      ',numOfDUAV' +
+      ',communicationRange' +
+      ',numOfBranches' +
+      ',duavRadius' +
+      ',duavMaxSpeed' +
+      ',duavCollisionThreshold' +
+      ',duavWobblingRadius' +
+      ',muavRadius' +
+      ',muavMaxSpeed' +
+      ',muavCollisionThreshold' +
+      ',muavWobblingRadius' +
+      ',numOfClusters' +
+      ',numOfLonelyUAVs' +
+      ',timePassed';
+
     this.initializeParameters();
   }
 
@@ -53,32 +54,32 @@ class ParameterTest {
 
   logRun(updateCount) {
     this._runLog += `\n${Config.flightZone.size.width}` +
-                      `,${Config.flightZone.size.height}` +
-                      `,${Config.flightZone.size.depth}` +
-                      `,${Config.simulation.numOfUAVs}` +
-                      `,${Config.cluster.communicationRange}` +
-                      `,${Config.cluster.numOfBranches}` +
-                      `,${Config.duav.radius}` +
-                      `,${Config.duav.speed}` +
-                      `,${Config.duav.collisionThreshold}` +
-                      `,${Config.duav.wobblingRadius}` +
-                      `,${Config.muav.radius}` +
-                      `,${Config.muav.speed}` +
-                      `,${Config.muav.collisionThreshold}` +
-                      `,${Config.muav.wobblingRadius}` +
-                      `,${setupDelegate.getNumOfClusters()}` +
-                      `,${setupDelegate.getNumOfLonelyUAVs()}` +
-                      `,${updateCount}`;
+      `,${Config.flightZone.size.height}` +
+      `,${Config.flightZone.size.depth}` +
+      `,${Config.simulation.numOfUAVs}` +
+      `,${Config.cluster.communicationRange}` +
+      `,${Config.cluster.numOfBranches}` +
+      `,${Config.duav.radius}` +
+      `,${Config.duav.speed}` +
+      `,${Config.duav.collisionThreshold}` +
+      `,${Config.duav.wobblingRadius}` +
+      `,${Config.muav.radius}` +
+      `,${Config.muav.speed}` +
+      `,${Config.muav.collisionThreshold}` +
+      `,${Config.muav.wobblingRadius}` +
+      `,${setupDelegate.getNumOfClusters()}` +
+      `,${setupDelegate.getNumOfLonelyUAVs()}` +
+      `,${updateCount}`;
   }
 
   nextRun(updateCount) {
     this.logRun(updateCount);
     controls.resetCanvas();
     this._currentRunCount++;
-    if(this._currentRunCount > Config.simulation.runCount) {
+    if (this._currentRunCount > Config.simulation.runCount) {
       this._currentRunCount = 1;
-      if(this._parameterPicker == 0) {
-        if(Config.simulation.numOfUAVs < 100) {
+      if (this._parameterPicker == 0) {
+        if (Config.simulation.numOfUAVs < 100) {
           controls.setNumOfUAVs(Config.simulation.numOfUAVs + 10);
         } else {
           this.moveToNextParameter();
@@ -87,8 +88,8 @@ class ParameterTest {
         }
       }
 
-      if(this._parameterPicker == 1) {
-        if(Config.cluster.communicationRange < 500) {
+      if (this._parameterPicker == 1) {
+        if (Config.cluster.communicationRange < 500) {
           controls.setCommunicationRange(Config.cluster.communicationRange + 100);
         } else {
           this.moveToNextParameter();
@@ -97,8 +98,8 @@ class ParameterTest {
         }
       }
 
-      if(this._parameterPicker == 2) {
-        if(Config.duav.wobblingRadius < 500) {
+      if (this._parameterPicker == 2) {
+        if (Config.duav.wobblingRadius < 500) {
           controls.setDUAVWobblingRadius(Config.duav.wobblingRadius + 100);
         } else {
           this.moveToNextParameter();
@@ -107,8 +108,8 @@ class ParameterTest {
         }
       }
 
-      if(this._parameterPicker == 3) {
-        if(Config.muav.wobblingRadius < 500) {
+      if (this._parameterPicker == 3) {
+        if (Config.muav.wobblingRadius < 500) {
           controls.setMUAVWobblingRadius(Config.muav.wobblingRadius + 100);
         } else {
           this.moveToNextParameter();
@@ -117,8 +118,8 @@ class ParameterTest {
         }
       }
 
-      if(this._parameterPicker == 4) {
-        if(Config.duav.collisionThreshold < 100) {
+      if (this._parameterPicker == 4) {
+        if (Config.duav.collisionThreshold < 100) {
           controls.setDUAVCollisionThreshold(Config.duav.collisionThreshold + 20);
         } else {
           this.moveToNextParameter();
@@ -127,8 +128,8 @@ class ParameterTest {
         }
       }
 
-      if(this._parameterPicker == 5) {
-        if(Config.muav.collisionThreshold < 100) {
+      if (this._parameterPicker == 5) {
+        if (Config.muav.collisionThreshold < 100) {
           controls.setMUAVCollisionThreshold(Config.muav.collisionThreshold + 20);
         } else {
           this.moveToNextParameter();
@@ -137,15 +138,15 @@ class ParameterTest {
         }
       }
 
-      if(this._parameterPicker == 6) {
-        if(Config.cluster.numOfBranches < 10) {
+      if (this._parameterPicker == 6) {
+        if (Config.cluster.numOfBranches < 10) {
           controls.setNumOfBranches(Config.cluster.numOfBranches + 1);
         } else {
           this.moveToNextParameter();
         }
       }
 
-      if(this._parameterPicker > 6) {
+      if (this._parameterPicker > 6) {
         this.downloadProgress();
         controls.pauseToggle(true);
         return false;

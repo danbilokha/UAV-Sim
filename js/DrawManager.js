@@ -37,5 +37,4 @@ class DrawManager {
     setupDelegate = new UAVManager();
     this.add(setupDelegate);
   }
-
 }

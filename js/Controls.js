@@ -12,7 +12,7 @@ var updateCount = 0;
 
 class Controls {
 
-  constructor(){
+  constructor() {
     this._keyBindings = {};
 
     this._keyBindings[' '] = this.pauseToggle.bind(this);
@@ -26,18 +26,18 @@ class Controls {
   }
 
   muavIsOutsideFlightZone() {
-    if(this._parameterTest != undefined) {
-      if(!this._parameterTest.nextRun(updateCount)) {
+    if (this._parameterTest != undefined) {
+      if (!this._parameterTest.nextRun(updateCount)) {
         this._parameterTest = null;
       }
-    } else if(autoRestart) {
+    } else if (autoRestart) {
       this.resetCanvas();
     }
   }
 
   keyPressed(keyCode) {
     let callback = this._keyBindings[String.fromCharCode(keyCode).toLowerCase()];
-    if(callback && typeof callback === "function") {
+    if (callback && typeof callback === "function") {
       callback();
     }
   }
@@ -59,7 +59,7 @@ class Controls {
   }
 
   performParameterTest() {
-    if(this._parameterTest == undefined) {
+    if (this._parameterTest === undefined) {
       this._parameterTest = new ParameterTest();
     }
   }
@@ -76,8 +76,10 @@ class Controls {
 
   resetCanvas() {
     drawManager.stop();
+
     drawManager = new DrawManager();
     drawManager.initializeObjects();
+
     updateCount = 0;
   }
 
@@ -141,7 +143,7 @@ class Controls {
 
   incrementUpdateCount() {
     updateCount++;
-    if(updateCount >= Config.simulation.failedThreshold && this._parameterTest != undefined) {
+    if (updateCount >= Config.simulation.failedThreshold && this._parameterTest != undefined) {
       //updateCount = -1;
       this.muavIsOutsideFlightZone();
     }
