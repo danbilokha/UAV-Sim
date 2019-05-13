@@ -1,41 +1,41 @@
-class ClusterHead{
-  constructor(uav){
+class ClusterHead {
+  constructor(uav) {
     this.uav = uav;
     this.nrOfBranches = Config.cluster.numOfBranches;
     this.branches = [];
-    for(let i = 0; i < this.nrOfBranches; i++) {
+    for (let i = 0; i < this.nrOfBranches; i++) {
       this.branches.push(new UAVBranch(Config.cluster.branchColors[i % Config.cluster.branchColors.length]));
     }
     uav.shouldAcceptChildren = true;
     uav.ownWeight = 0;
 
-    if(uav.parent) uav.parent.removeChild(this);
+    if (uav.parent) uav.parent.removeChild(this);
     uav.parent = null;
   }
 
-  draw(){
+  draw() {
     var head = this.uav;
     let branches = this.getOccupiedBranches();
-    for(let i=0; i<branches.length; ++i){
+    for (let i = 0; i < branches.length; ++i) {
       var child = branches[i].head;
-      while(head && child){
+      while (head && child) {
         push();
-          let pos1 = head.actualPosition;
-          let pos2 = child.actualPosition;
-          vertex(pos1.x, pos1.y, pos1.z);
-          vertex(pos2.x, pos2.y, pos2.z);
+        let pos1 = head.actualPosition;
+        let pos2 = child.actualPosition;
+        vertex(pos1.x, pos1.y, pos1.z);
+        vertex(pos2.x, pos2.y, pos2.z);
         pop();
         head = child;
-        if(head) child = head.child;
+        if (head) child = head.child;
       }
       head = this.uav;
     }
   }
 
   doChase(mUAVs) {
-    if(mUAVs && mUAVs.length > 0) {
+    if (mUAVs && mUAVs.length > 0) {
       let mUAV = mUAVs[0];
-      if(this._oldMUAVPos) {
+      if (this._oldMUAVPos) {
         // Predict mUAV heading
         let n = this.uav.headingTo(mUAV.actualPosition);
         let v = mUAV.headingFrom(this._oldMUAVPos);
@@ -70,74 +70,74 @@ class ClusterHead{
     return branch.length > 0 ? branch[0] : null;
   }
 
-  hasBranch(head){
+  hasBranch(head) {
     return this.getBranchOfHead(head) != null;
   }
 
-  clearBranches(){
+  clearBranches() {
     let branches = this.getOccupiedBranches();
-    for(let i=0; i<branches.length; ++i) {
+    for (let i = 0; i < branches.length; ++i) {
       branches[i].head.didBecomeDUAV();
       branches[i].head = null;
     }
   }
 
-  willBecomeDUAV(){
+  willBecomeDUAV() {
     this.clearBranches();
   }
 
-  childDidAskForConnection(child){
-    return this.getNumberOfOccupiedBranches()<this.nrOfBranches;
+  childDidAskForConnection(child) {
+    return this.getNumberOfOccupiedBranches() < this.nrOfBranches;
   }
 
-  appendChild(child){
+  appendChild(child) {
     let branch = this.getFreeBranches()[0];
     branch.head = child;
     child._color = branch.color;
     child.parent = this.uav;
-    child.ownWeight = this.uav.ownWeight+1;
+    child.ownWeight = this.uav.ownWeight + 1;
     this.uav.shouldFlock = child.shouldFlock = false;
     let branches = this.getOccupiedBranches();
-    if(branches.length == this.nrOfBranches && this.uav.shouldAcceptChildren){
-        this.uav.shouldAcceptChildren = false;
-        this.startAcceptingAdditionalLeaf();
+    if (branches.length == this.nrOfBranches && this.uav.shouldAcceptChildren) {
+      this.uav.shouldAcceptChildren = false;
+      this.startAcceptingAdditionalLeaf();
     }
   }
 
-  didGetNewChild(branchhead){
+  didGetNewChild(branchhead) {
     let branch = this.getBranchOfHead(branchhead);
-    if(branch) {
+    if (branch) {
       branch.length++;
       this.startAcceptingAdditionalLeaf();
     }
   }
 
-  startAcceptingAdditionalLeaf(){
+  startAcceptingAdditionalLeaf() {
     let branches = this.getOccupiedBranches();
-    if(branches.length == this.nrOfBranches) {
+    if (branches.length == this.nrOfBranches) {
       let minBranchLength = min(branches.map(branch => branch.length));
-      for(let i=0; i<branches.length; ++i){
-        if(branches[i].length == minBranchLength) {
+      for (let i = 0; i < branches.length; ++i) {
+        if (branches[i].length == minBranchLength) {
           branches[i].head.startAcceptingNewLeaf();
         }
       }
     }
   }
 
-  stopAcceptingAdditionalLeaf(){
+  stopAcceptingAdditionalLeaf() {
     let branches = this.getOccupiedBranches();
-    for(let i=0; i<branches.length; ++i){
+    for (let i = 0; i < branches.length; ++i) {
       branches[i].head.stopAcceptingNewLeaf();
     }
   }
 
-  removeBranch(branchChild){
+  removeBranch(branchChild) {
     let branch = this.getBranchOfHead(branchChild);
-    if(branch) {
+    if (branch) {
       branch.head.didBecomeDUAV();
       branch.head = null;
 
-      if(this.getNumberOfOccupiedBranches() == 0) {
+      if (this.getNumberOfOccupiedBranches() == 0) {
         this.uav.didBecomeDUAV();
       } else {
         this.stopAcceptingAdditionalLeaf();
@@ -149,7 +149,7 @@ class ClusterHead{
 
   didLoseChild(branchChild, weight) {
     let branch = this.getBranchOfHead(branchChild);
-    if(branch) {
+    if (branch) {
       branch.length = weight;
       this.stopAcceptingAdditionalLeaf();
       this.balanceCluster();
@@ -160,32 +160,32 @@ class ClusterHead{
   balanceCluster() {
     let branches = this.getOccupiedBranches();
     let minBranchLength = min(this.branches.map(branch => branch._length));
-    for(let i=0; i<branches.length; ++i){
-      if(branches[i].length > minBranchLength + 1) {
+    for (let i = 0; i < branches.length; ++i) {
+      if (branches[i].length > minBranchLength + 1) {
         branches[i].head.removeChildAt(minBranchLength + 2);
         branches[i].length = minBranchLength + 1;
       }
     }
   }
 
-  checkForDeadLinks(){
+  checkForDeadLinks() {
     let branches = this.getOccupiedBranches();
-    for(let i = 0; i < branches.length; i++) {
-      if(this.uav.distanceTo(branches[i].head) > this.uav._communicationRange){
+    for (let i = 0; i < branches.length; i++) {
+      if (this.uav.distanceTo(branches[i].head) > this.uav._communicationRange) {
         this.removeBranch(branches[i].head);
       }
     }
   }
 
-  doFormation(mUAVs){
-    if(formation) {
+  doFormation(mUAVs) {
+    if (formation) {
       var clusterRadius = this.uav.collisionThreshold + 5;
       var occupiedBranches = this.getOccupiedBranches();
       let nrOfBranches = occupiedBranches.length;
       var separationTheta = TWO_PI / nrOfBranches;
       var maxBranchLength = this.getMaxBranchLength();
 
-      for(let i = 0; i < nrOfBranches; i++) {
+      for (let i = 0; i < nrOfBranches; i++) {
         let branchHead = occupiedBranches[i].head;
 
         let dUAVSeparation = 2 * clusterRadius * sin(Math.PI / (2 * maxBranchLength));
@@ -206,25 +206,25 @@ class ClusterHead{
 
   positionateBranchesForFormation(branchHead, mUAV, mUAVDir, rotDir, clusterRadius) {
     let branchLength = this.getMaxBranchLength() + 1;
-    branchHead.positionateAccordingFormation( this.getEnclosementAngle(mUAV, clusterRadius)/branchLength,
-                                                mUAVDir,
-                                                rotDir,
-                                                clusterRadius,
-                                                this.uav.actualPosition);
+    branchHead.positionateAccordingFormation(this.getEnclosementAngle(mUAV, clusterRadius) / branchLength,
+      mUAVDir,
+      rotDir,
+      clusterRadius,
+      this.uav.actualPosition);
   }
 
-  scaledDirection(start, end, magnitude){
+  scaledDirection(start, end, magnitude) {
     return start.headingTo(end.actualPosition)
-                            .normalize()
-                            .mult(magnitude || 1);
+    .normalize()
+    .mult(magnitude || 1);
   }
 
-  getMaxBranchLength(){
+  getMaxBranchLength() {
     return max(this.branches.map(branch => branch._length));
   }
 
   getEnclosementAngle(mUAV, clusterRadius) {
-    if(formationEnclosement && this.uav.distanceTo(mUAV) < clusterRadius * (this.getMaxBranchLength() + 1) * 0.7) {
+    if (formationEnclosement && this.uav.distanceTo(mUAV) < clusterRadius * (this.getMaxBranchLength() + 1) * 0.7) {
       return Config.cluster.maxFormationAngle;
     }
     return Config.cluster.formationAngle

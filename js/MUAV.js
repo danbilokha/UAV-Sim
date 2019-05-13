@@ -12,11 +12,11 @@ class MUAV extends UAV {
       /*wobblingRadius:*/ Config.muav.wobblingRadius,
       /*communicationRange:*/ Config.cluster.communicationRange
     );
+
     this.textWeightGraphics = createGraphics(
       9 * Config.muav.radius,
       3 * Config.muav.radius
     );
-
   }
 
   draw() {
