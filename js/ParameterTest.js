@@ -28,7 +28,7 @@ class ParameterTest {
 
   initializeParameters() {
 
-    controls.setNumOfUAVs(25);
+    controls.setNumOfUAVs(5);
 
     controls.setCommunicationRange(100);
     controls.setDUAVWobblingRadius(50);

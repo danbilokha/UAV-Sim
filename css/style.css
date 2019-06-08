@@ -19,7 +19,7 @@ body {
 }
 
 hr {
-    border-color: #057bff;
+    border-color: gray;
 }
 
 .ui-state-default {
@@ -53,7 +53,7 @@ hr {
 
 .ui-state-active {
     color: white;
-    background: #057bff;
+    background: gray;
 }
 
 .divSettingsContentEntry {
