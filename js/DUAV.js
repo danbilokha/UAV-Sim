@@ -43,7 +43,7 @@ class DUAV extends UAV {
   }
 
   update(nearbyUAVs, mUAVs) {
-    console.log(mUAVs);
+    // unneede
     // if (this.isClusterHead()) {
     //   this.boundWithinFlightzone();
     // }
