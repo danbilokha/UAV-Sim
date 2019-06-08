@@ -1,4 +1,11 @@
-# UAV-Sim
-A JavaScript implementation of a simulator showing an autonomous formation and escort mechanism for defense UAVs in order to lead a malicious UAV out of the restricted zone.
+# UAV-problem-solution
+The solution of the restricted flight zone problem where malicious UAVs could find one's way. 
 
-Used JS framework: p5 https://p5js.org/
+# How to run? 
+1. Download the repo.
+2. Open index.html.
+3. Click "Start".
+
+# Done by
+1. Mesut Keskin (mesutkskn@gmail.com),
+2. Danylo Bilokha (danbilokha@gmail.com)
