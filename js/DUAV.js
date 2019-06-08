@@ -48,11 +48,11 @@ class DUAV extends UAV {
     //   this.boundWithinFlightzone();
     // }
 
-    this.khopca.run(nearbyUAVs);
-    this.doOwnClustering(nearbyUAVs);
-    this.doFlocking(nearbyUAVs);
-    this.doFormation(mUAVs);
-    this.checkForDeadLinks();
+    //this.khopca.run(nearbyUAVs);
+    //this.doOwnClustering(nearbyUAVs);
+    //this.doFlocking(nearbyUAVs);
+    //this.doFormation(mUAVs);
+    //this.checkForDeadLinks();
     this.doChase(mUAVs);
 
     // Must be called last

@@ -35,19 +35,19 @@ class ClusterHead {
   doChase(mUAVs) {
     if (mUAVs && mUAVs.length > 0) {
       let mUAV = mUAVs[0];
+
       if (this._oldMUAVPos) {
         // Predict mUAV heading
         let n = this.uav.headingTo(mUAV.actualPosition);
         let v = mUAV.headingFrom(this._oldMUAVPos);
-
         let a = p5.Vector.angleBetween(n, v);
 
         let vProj = n.setMag(cos(a) * v.mag());
-
         let offsetVector = v.sub(vProj);
 
         this.uav.applyForce(offsetVector, 0.1);
       }
+
       this.uav.moveTo(mUAV.actualPosition, 0.5);
       this._oldMUAVPos = mUAV.actualPosition;
     }
