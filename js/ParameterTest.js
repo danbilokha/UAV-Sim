@@ -27,21 +27,21 @@ class ParameterTest {
   }
 
   initializeParameters() {
-    controls.setNumOfUAVs(10);
+    controls.setNumOfUAVs(1);
     controls.setCommunicationRange(100);
     controls.setDUAVWobblingRadius(50);
     controls.setMUAVWobblingRadius(150);
     controls.setDUAVCollisionThreshold(40);
     controls.setMUAVCollisionThreshold(60);
-    controls.setNumOfBranches(3);
+    controls.setNumOfBranches(1);
 
-    controls.setUpdateFrequency(Config.simulation.maxUpdate);
-    controls.pauseToggle(false);
-    controls.autoRestartToggle(true);
-    controls.wobblingToggle(true);
-    controls.separationToggle(true);
-    controls.chaseToggle(true);
-    controls.formationToggle(true);
+    // controls.setUpdateFrequency(Config.simulation.maxUpdate);
+    // controls.pauseToggle(false);
+    // controls.autoRestartToggle(true);
+    // controls.wobblingToggle(true);
+    // controls.separationToggle(true);
+    // controls.chaseToggle(true);
+    // controls.formationToggle(true);
 
     controls.resetCanvas();
   }

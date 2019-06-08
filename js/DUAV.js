@@ -1,8 +1,6 @@
 class DUAV extends UAV {
 
-
   constructor(id, position) {
-
     super(
       /*id:*/ id,
       /*radius:*/ Config.duav.radius,
@@ -14,7 +12,7 @@ class DUAV extends UAV {
       /*communicationRange:*/ Config.cluster.communicationRange
     );
 
-    this.khopca = new KHOPCA(this)
+    this.khopca = new KHOPCA(this);
     this.parent = null;
     this.child = null;
     this.textWeightGraphics = createGraphics(
@@ -24,7 +22,7 @@ class DUAV extends UAV {
 
     this.weightStrokeColor = "black";
 
-    this.clusterHead = null;
+    this.clusterHead = new ClusterHead(this);
 
     this.shouldAcceptChildren = false;
     this.shouldFlock = true;
@@ -33,18 +31,22 @@ class DUAV extends UAV {
 
   draw() {
     let pos = this.actualPosition;
+
     push();
     translate(pos.x, pos.y, pos.z);
     fill(this._color);
+
     this.drawOwnWeight();
     sphere(this._radius);
+
     pop();
   }
 
   update(nearbyUAVs, mUAVs) {
-    if (this.isClusterHead()) {
-      this.boundWithinFlightzone();
-    }
+    console.log(mUAVs);
+    // if (this.isClusterHead()) {
+    //   this.boundWithinFlightzone();
+    // }
 
     this.khopca.run(nearbyUAVs);
     this.doOwnClustering(nearbyUAVs);
@@ -99,9 +101,9 @@ class DUAV extends UAV {
   }
 
   doChase(mUAVs) {
-    if (chasing && this.isClusterHead()) {
-      this.clusterHead.doChase(mUAVs);
-    }
+      if(this.clusterHead) {
+        this.clusterHead.doChase(mUAVs);
+      }
   }
 
   boundWithinFlightzone() {
@@ -110,6 +112,7 @@ class DUAV extends UAV {
     let cx = constrain(pos.x, -flightZoneSize.width / 2, flightZoneSize.width / 2);
     let cy = constrain(pos.y, -flightZoneSize.height / 2, flightZoneSize.height / 2);
     let cz = constrain(pos.z, -flightZoneSize.depth / 2, flightZoneSize.depth / 2);
+
     this.anchorPosition.add(cx - pos.x, cy - pos.y, cz - pos.z);
   }
 
@@ -231,6 +234,7 @@ class DUAV extends UAV {
       this.clusterHead.willBecomeDUAV();
       this.clusterHead = null;
     }
+
     this.ownWeight = 0;
     this.shouldAcceptChildren = false;
     this.shouldFlock = true;
@@ -238,6 +242,7 @@ class DUAV extends UAV {
     if (this.parent) {
       this.parent.child = null;
     }
+
     this.parent = null;
     if (this.child) this.child.didBecomeDUAV();
     this.child = null;
@@ -248,5 +253,4 @@ class DUAV extends UAV {
     if (this.isClusterHead()) return this.clusterHead.childDidAskForConnection(child);
     return this.shouldAcceptChildren;
   }
-
 }
